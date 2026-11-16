@@ -1,3 +1,5 @@
+import java.time.Year;
+
 public class Movie {
     private String title;
     private String director;
@@ -21,6 +23,9 @@ public class Movie {
         if (title == null || title.trim().isEmpty()) {
             throw new IllegalArgumentException("Title cannot be empty.");
         }
+        if (title.contains(";")) {
+            throw new IllegalArgumentException("Title cannot contain semicolons (;).");
+        }
         this.title = title.trim();
     }
 
@@ -31,6 +36,9 @@ public class Movie {
     public void setDirector(String director) {
         if (director == null || director.trim().isEmpty()) {
             throw new IllegalArgumentException("Director cannot be empty.");
+        }
+        if (director.contains(";")) {
+            throw new IllegalArgumentException("Director cannot contain semicolons (;).");
         }
         this.director = director.trim();
     }
@@ -43,6 +51,9 @@ public class Movie {
         if (genre == null || genre.trim().isEmpty()) {
             throw new IllegalArgumentException("Genre cannot be empty.");
         }
+        if (genre.contains(";")) {
+            throw new IllegalArgumentException("Genre cannot contain semicolons (;).");
+        }
         this.genre = genre.trim();
     }
 
@@ -51,8 +62,9 @@ public class Movie {
     }
 
     public void setYear(int year) {
-        if (year < 1888 || year > java.time.Year.now().getValue()) {
-            throw new IllegalArgumentException("Invalid year.");
+        int currentYear = Year.now().getValue();
+        if (year < 1888 || year > currentYear) {
+            throw new IllegalArgumentException("Year must be between 1888 and " + currentYear + ".");
         }
         this.year = year;
     }
@@ -63,12 +75,31 @@ public class Movie {
 
     public void setRating(double rating) {
         if (rating < 0 || rating > 10) {
-            throw new IllegalArgumentException("Rating must be 0-10.");
+            throw new IllegalArgumentException("Rating must be between 0 and 10.");
         }
-        this.rating = rating;
+        this.rating = Math.round(rating * 10.0) / 10.0;
     }
 
-    // TODO: String getTitle()        -> one line, e.g. "Inception (2010)"
-    // TODO: String getDescription()  -> multi-line using "\n"
-    // TODO: one extra method, e.g. getAge()
+    public int getAge() {
+        return Year.now().getValue() - year;
+    }
+
+    public String getTitle() {
+        return title + " (" + year + ")";
+    }
+
+    public String getDetails() {
+        return "| Title: " + title + "\n" +
+                "| Director: " + director + "\n" +
+                "| Genre: " + genre + "\n" +
+                "| Year: " + year + "\n" +
+                "| Rating: " + rating + "/10\n" +
+                "| Age: " + getAge() + " years\n";
+    }
+
+    public String getDescription() {
+        return "|======= MOVIE INFO =======|\n" +
+                getDetails() +
+                "|==========================|";
+    }
 }

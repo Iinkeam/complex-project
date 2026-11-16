@@ -1,0 +1,15 @@
+1. The Shawshank Redemption; Frank Darabont; Drama; 1994; 9.3;
+2. The Godfather; Francis Ford Coppola; Crime; 1972; 9.2;
+3. The Dark Knight; Christopher Nolan; Action; 2008; 9.0;
+4. Pulp Fiction; Quentin Tarantino; Crime; 1994; 8.9;
+5. Inception; Christopher Nolan; Sci-Fi; 2010; 8.8;
+6. The Matrix; Lana Wachowski; Sci-Fi; 1999; 8.7;
+7. Interstellar; Christopher Nolan; Sci-Fi; 2014; 8.7;
+8. Parasite; Bong Joon-ho; Thriller; 2019; 8.5;
+9. Whiplash; Damien Chazelle; Drama; 2014; 8.5;
+10. Gladiator; Ridley Scott; Action; 2000; 8.5;
+11. The Shining; Stanley Kubrick; Horror; 1980; 8.4;
+12. Alien; Ridley Scott; Horror; 1979; 8.5;
+13. Toy Story; John Lasseter; Animation; 1995; 8.3;
+14. Get Out; Jordan Peele; Horror; 2017; 7.8;
+15. Dune: Part Two; Denis Villeneuve; Sci-Fi; 2024; 8.5;
