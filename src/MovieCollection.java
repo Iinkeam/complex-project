@@ -12,18 +12,22 @@ public class MovieCollection {
     private static final String FILE_NAME = "data/library.txt";
     private boolean hasUnsavedChanges = false;
 
+    // scanner constructor
     public MovieCollection(Scanner scanner) {
         this.scanner = scanner;
     }
 
+    // Holds unsaved changes status
     public boolean hasUnsavedChanges() {
         return hasUnsavedChanges;
     }
 
+    // Checks list for values
     public boolean isEmpty() {
         return collection.isEmpty();
     }
 
+    // MENU FUNCTIONS
     public void add() {
         try {
             System.out.print("Title: ");
@@ -235,6 +239,7 @@ public class MovieCollection {
         }
     }
 
+    // SAVING/LOADING METHODS
     public void read(boolean missing) {
         File file = new File(FILE_NAME);
         if (!file.exists()) {

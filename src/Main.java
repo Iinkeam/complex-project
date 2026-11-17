@@ -1,14 +1,26 @@
 import java.util.Scanner;
 
 public class Main {
+    // program entry point: creates the menu and starts it
     public static void main(String[] args) {
         Menu menu = new Menu();
         menu.logic();
     }
 }
+
 class Menu {
     private final Scanner scanner = new Scanner(System.in);
     private final MovieCollection collection = new MovieCollection(scanner);
+
+    private static final String[] MENU_1 = {
+            "WELCOME TO MOVIE COLLECTION!",
+            "     PRESS ANY BUTTON       "
+    };
+
+    private static final String[] MENU_2 = {
+            "DO YOU WANT TO LOAD FROM FILES?",
+            "           (YES/NO)            "
+    };
 
     private static final String[] MENU_ITEMS = {
             "\n|===== MOVIE COLLECTION =====|",
@@ -24,19 +36,63 @@ class Menu {
             "|============================|"
     };
 
-    private void print() {
-        for (String s : MENU_ITEMS) {
+    // prints every line of a menu array
+    private void print(String[] arr) {
+        for (String s : arr) {
             System.out.println(s);
         }
+    }
+
+    // prints the "choose an option" prompt
+    private void promptOption() {
         System.out.print(" CHOOSE AN OPTION: ");
     }
 
+    // clears the screen
+    private void clearScreen() {
+        System.out.println("\n".repeat(75));
+    }
+
+    // waits for Enter, then clears the screen
+    private void enterAndClear() {
+        System.out.print("\nPress Enter to continue...");
+        scanner.nextLine();
+        clearScreen();
+    }
+
+    // asks a yes/no question, returns true for yes
+    private boolean askYesNo(String question) {
+        while (true) {
+            System.out.print(question);
+            String answer = scanner.nextLine().trim();
+            if (answer.equalsIgnoreCase("y") || answer.equalsIgnoreCase("yes")) {
+                return true;
+            }
+            if (answer.equalsIgnoreCase("n") || answer.equalsIgnoreCase("no")) {
+                return false;
+            }
+            System.out.println("Please enter Y or N.");
+        }
+    }
+
+    // main program: welcome screen, load question, main menu loop
     public void logic() {
-        collection.read(true);
+        print(MENU_1);
+        scanner.nextLine();
+        clearScreen();
+
+        print(MENU_2);
+        if (askYesNo(" YOUR ANSWER: ")) {
+            collection.read(true);
+        } else {
+            System.out.println("Starting with a new file!");
+        }
+        enterAndClear();
 
         boolean running = true;
         while (running) {
-            print();
+            print(MENU_ITEMS);
+            promptOption();
             String choice = scanner.nextLine().trim();
 
             switch (choice) {
@@ -71,9 +127,14 @@ class Menu {
                 default:
                     System.out.println("Invalid option, try again.");
             }
+
+            if (running) {
+                enterAndClear();
+            }
         }
     }
 
+    // submenu for printing: short list, full info, or one movie
     private void printMenu() {
         if (collection.isEmpty()) {
             System.out.println("The collection is empty.");
@@ -86,7 +147,7 @@ class Menu {
         System.out.println("| 3 - Single movie details        |");
         System.out.println("| 0 - BACK                        |");
         System.out.println("|=================================|");
-        System.out.print(" CHOOSE AN OPTION: ");
+        promptOption();
 
         String subChoice = scanner.nextLine().trim();
         switch (subChoice) {
@@ -113,6 +174,7 @@ class Menu {
         }
     }
 
+    // asks which movie to edit (by its list number) and passes the index to the collection
     private void edit() {
         if (collection.isEmpty()) {
             System.out.println("The collection is empty.");
@@ -128,6 +190,7 @@ class Menu {
         }
     }
 
+    // asks which movie to remove (by its list number) and passes the index to the collection
     private void remove() {
         if (collection.isEmpty()) {
             System.out.println("The collection is empty.");
@@ -143,11 +206,10 @@ class Menu {
         }
     }
 
+    // reloads movies from the file
     private void reload() {
         if (collection.hasUnsavedChanges()) {
-            System.out.print("You have unsaved changes that will be lost. Reload anyway? (Y/N): ");
-            String answer = scanner.nextLine().trim();
-            if (!answer.equalsIgnoreCase("y") && !answer.equalsIgnoreCase("yes")) {
+            if (!askYesNo("You have unsaved changes that will be lost. Reload anyway? (Y/N): ")) {
                 System.out.println("Reload cancelled.");
                 return;
             }
@@ -155,26 +217,15 @@ class Menu {
         collection.read(false);
     }
 
+    // exits the program with save option
     private void exit() {
-        if (!collection.hasUnsavedChanges()) {
-            System.out.println("Goodbye!");
-            return;
-        }
-
-        while (true) {
-            System.out.print("You have unsaved changes. Save before exiting? (Y/N): ");
-            String answer = scanner.nextLine().trim();
-
-            if (answer.equalsIgnoreCase("y") || answer.equalsIgnoreCase("yes")) {
+        if (collection.hasUnsavedChanges()) {
+            if (askYesNo("You have unsaved changes. Save before exiting? (Y/N): ")) {
                 collection.save();
-                System.out.println("Goodbye!");
-                return;
-            } else if (answer.equalsIgnoreCase("n") || answer.equalsIgnoreCase("no")) {
-                System.out.println("Exiting without saving. Goodbye!");
-                return;
             } else {
-                System.out.println("Please enter Y or N.");
+                System.out.println("Exiting without saving.");
             }
         }
+        System.out.println("Goodbye!");
     }
 }
