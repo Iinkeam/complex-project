@@ -203,16 +203,22 @@ public class MovieCollection {
             return;
         }
 
-        String p = phrase.trim().toLowerCase();
+        String[] words = phrase.trim().toLowerCase().split("\\s+");
         boolean found = false;
 
         for (int i = 0; i < collection.size(); i++) {
             Movie m = collection.get(i);
-            if (m.getName().toLowerCase().contains(p)
-                    || m.getDirector().toLowerCase().contains(p)
-                    || m.getGenre().toLowerCase().contains(p)) {
-                System.out.println((i + 1) + " - " + m.getTitle() + " (" + m.getGenre() + ", dir. " + m.getDirector() + ")");
-                found = true;
+            String name = m.getName().toLowerCase();
+            String director = m.getDirector().toLowerCase();
+            String genre = m.getGenre().toLowerCase();
+
+            for (String w : words) {
+                if (name.contains(w) || director.contains(w) || genre.contains(w)) {
+                    System.out.println((i + 1) + " - " + m.getTitle()
+                            + " (" + m.getGenre() + ", dir. " + m.getDirector() + ")");
+                    found = true;
+                    break;
+                }
             }
         }
 

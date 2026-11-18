@@ -1,6 +1,7 @@
 import java.util.Scanner;
 
-public class Main {
+public class Main
+{
     // program entry point: creates the menu and starts it
     public static void main(String[] args) {
         Menu menu = new Menu();
